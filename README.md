@@ -43,7 +43,7 @@ you left off** enabled, your tabs restore automatically and no prompt is shown.
 Run as your normal user, not with sudo:
 
     ./install.sh            # Brave (default)
-    ./install.sh chrome     # or: chromium, edge, vivaldi
+    ./install.sh chrome     # or: chromium, chromium_snap, edge, vivaldi
 
 Then log out and back in once and launch Brave from the app menu.
 
@@ -54,9 +54,9 @@ Then log out and back in once and launch Brave from the app menu.
 ## Other browsers
 
 Chrome, Chromium, Edge and Vivaldi are supported through the table in
-`browsers.sh`, but they are **untested**. They need a package install (deb or
-rpm) with a launcher in `/usr/share/applications`. Snap and Flatpak installs are
-not supported. If one doesn't work, open an issue or fix its row in the table.
+`browsers.sh`, but they are **untested**. Use `chromium` for the Debian package
+and `chromium_snap` for the snap (the default on Ubuntu). Flatpak is not
+supported. If one doesn't work, open an issue or fix its row in the table.
 
 ## Notes
 

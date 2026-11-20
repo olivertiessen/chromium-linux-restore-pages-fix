@@ -1,5 +1,5 @@
 #!/bin/bash
-# Usage: ./uninstall.sh [brave|chrome|chromium|edge|vivaldi]   (default: brave)
+# Usage: ./uninstall.sh [brave|chrome|chromium|chromium_snap|edge|vivaldi]   (default: brave)
 cd "$(dirname "$0")"
 . ./browsers.sh
 load_browser "${1:-brave}" || exit 1

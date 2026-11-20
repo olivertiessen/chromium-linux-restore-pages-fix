@@ -1,29 +1,28 @@
 #!/bin/bash
 # Make a Chromium-based browser restore tabs after an unclean shutdown (Linux).
-# Usage: ./install.sh [brave|chrome|chromium|edge|vivaldi]   (default: brave)
+# Usage: ./install.sh [brave|chrome|chromium|chromium_snap|edge|vivaldi]   (default: brave)
 set -e
 cd "$(dirname "$0")"
 . ./browsers.sh
 load_browser "${1:-brave}"
 
 WRAPPER="$HOME/.local/bin/$NAME-clean"
-SYSTEM_DESKTOP="/usr/share/applications/$DESKTOP"
-[ -f "$SYSTEM_DESKTOP" ] || { echo "$SYSTEM_DESKTOP not found, is $NAME installed from a package?" >&2; exit 1; }
+[ -f "$DESKTOP_SRC" ] || { echo "$DESKTOP_SRC not found, is $NAME installed that way?" >&2; exit 1; }
 
 mkdir -p ~/.local/bin ~/.local/share/applications
 
 cat > "$WRAPPER" <<EOS
 #!/bin/bash
-P="\$HOME/.config/$PROFILE/Default/Preferences"
+P="\$HOME/$PROFILE/Default/Preferences"
 if [ -f "\$P" ] && ! pgrep -x $PROC >/dev/null; then
   sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/; s/"exited_cleanly":false/"exited_cleanly":true/' "\$P"
 fi
-exec /usr/bin/$BIN "\$@"
+exec $LAUNCHER "\$@"
 EOS
 chmod +x "$WRAPPER"
 
-cp "$SYSTEM_DESKTOP" ~/.local/share/applications/
-sed -i "s|^Exec=/usr/bin/$BIN|Exec=$WRAPPER|" ~/.local/share/applications/"$DESKTOP"
+cp "$DESKTOP_SRC" ~/.local/share/applications/
+sed -i "s|$LAUNCHER|$WRAPPER|" ~/.local/share/applications/"$DESKTOP"
 update-desktop-database ~/.local/share/applications 2>/dev/null || true
 
 grep '^Exec=' ~/.local/share/applications/"$DESKTOP"

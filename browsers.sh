@@ -1,21 +1,22 @@
 # Browser table, sourced by install.sh and uninstall.sh.
-# Fields: profile dir (under ~/.config) | launcher binary | desktop file | process name
+# Fields: name | profile dir (relative to $HOME) | launcher to wrap | desktop file | process name
 # Only brave is tested.
 BROWSERS=(
-  "brave|BraveSoftware/Brave-Browser|brave-browser-stable|brave-browser.desktop|brave"
-  "chrome|google-chrome|google-chrome-stable|google-chrome.desktop|chrome"
-  "chromium|chromium|chromium-browser|chromium-browser.desktop|chromium"
-  "edge|microsoft-edge|microsoft-edge-stable|microsoft-edge.desktop|msedge"
-  "vivaldi|vivaldi|vivaldi-stable|vivaldi-stable.desktop|vivaldi-bin"
+  "brave|.config/BraveSoftware/Brave-Browser|/usr/bin/brave-browser-stable|/usr/share/applications/brave-browser.desktop|brave"
+  "chrome|.config/google-chrome|/usr/bin/google-chrome-stable|/usr/share/applications/google-chrome.desktop|chrome"
+  "chromium|.config/chromium|/usr/bin/chromium|/usr/share/applications/chromium.desktop|chromium"
+  "chromium_snap|snap/chromium/common/chromium|/snap/bin/chromium|/var/lib/snapd/desktop/applications/chromium_chromium.desktop|chromium"
+  "edge|.config/microsoft-edge|/usr/bin/microsoft-edge-stable|/usr/share/applications/microsoft-edge.desktop|msedge"
+  "vivaldi|.config/vivaldi|/usr/bin/vivaldi-stable|/usr/share/applications/vivaldi-stable.desktop|vivaldi-bin"
 )
 
-# Usage: load_browser <name>; sets NAME PROFILE BIN DESKTOP PROC
+# Usage: load_browser <name>; sets NAME PROFILE LAUNCHER DESKTOP_SRC PROC DESKTOP
 load_browser() {
-  local row
+  local row want="${1//-/_}"
   for row in "${BROWSERS[@]}"; do
-    IFS='|' read -r NAME PROFILE BIN DESKTOP PROC <<<"$row"
-    [ "$NAME" = "$1" ] && return 0
+    IFS='|' read -r NAME PROFILE LAUNCHER DESKTOP_SRC PROC <<<"$row"
+    if [ "$NAME" = "$want" ]; then DESKTOP=$(basename "$DESKTOP_SRC"); return 0; fi
   done
-  echo "Unknown browser '$1'. Supported: brave chrome chromium edge vivaldi" >&2
+  echo "Unknown browser '$1'. Supported: brave chrome chromium chromium_snap edge vivaldi" >&2
   return 1
 }
