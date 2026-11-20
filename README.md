@@ -35,25 +35,28 @@ you left off** enabled, your tabs restore automatically and no prompt is shown.
 ## Requirements
 
 - Linux with GNOME-style desktop launchers
-- Brave from the apt repo (`/usr/bin/brave-browser-stable`)
+- Brave from the apt repo (`/usr/bin/brave-browser-stable`), or another browser from the list below
 - Startup set to **Continue where you left off** (`brave://settings/getStarted`)
 
 ## Install
 
 Run as your normal user, not with sudo:
 
-    ./install.sh
+    ./install.sh            # Brave (default)
+    ./install.sh chrome     # or: chromium, edge, vivaldi
 
 Then log out and back in once and launch Brave from the app menu.
 
 ## Uninstall
 
-    ./uninstall.sh
+    ./uninstall.sh          # same argument as install
 
 ## Other browsers
 
-Change the profile path and launcher in `install.sh`, for example
-`~/.config/google-chrome` for Chrome or `~/.config/chromium` for Chromium.
+Chrome, Chromium, Edge and Vivaldi are supported through the table in
+`browsers.sh`, but they are **untested**. They need a package install (deb or
+rpm) with a launcher in `/usr/share/applications`. Snap and Flatpak installs are
+not supported. If one doesn't work, open an issue or fix its row in the table.
 
 ## Notes
 
